@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: "murcydb"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  murcy_app:
+    build: ./BackEnd
+#    image: yorch044/unizar-30248-2019-murcy:latest
+    container_name: murcy
+    ports:
+      - "9090:8080"
+      - "9797:8787"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      ADMIN_PASS: ${ADMIN_PASS}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      BACK_END_URL: ${BACK_END_URL}
+      FRONT_END_URL: ${FRONT_END_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      MAIL: ${MAIL}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_SERVER: ${MAIL_SERVER}
+      MAIL_SERVER_PORT: ${MAIL_SERVER_PORT}
+    depends_on:
+      - postgres
