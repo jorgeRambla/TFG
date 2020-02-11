@@ -6,3 +6,7 @@
 	path = FrontEndOld
 	url = https://github.com/UNIZAR-30248-2019-MURCY/FrontEnd
 	branch = master
+[submodule "BackEndOld"]
+	path = BackEndOld
+	url = https://github.com/UNIZAR-30248-2019-MURCY/BackEnd
+	branch = master

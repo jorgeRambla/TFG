@@ -4,25 +4,43 @@ services:
   postgres:
     image: postgres
     container_name: "murcydb"
+    volumes:
+      - ./postgres_db_init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     env_file:
       - enviroment.env
-  murcy_api:
+  murcy_api_old:
     build: 
-      context: ./BackEnd
+      context: ./BackEndOld
       dockerfile: Dockerfile
-    container_name: murcyapi
+    container_name: murcy_api_old
     ports:
       - "9090:8080"
     env_file:
       - enviroment.env
     depends_on:
       - postgres
-  murcy_app:
+  murcy_app_old:
     build: 
       context: ./FrontEndOld
       dockerfile: Dockerfile
-    container_name: murcy_application
+    container_name: murcy_application_old
     ports:
-      - "80:80"
+      - "9000:80"
+    depends_on:
+      - murcy_api_old
+      
+  murcy_api:
+    build: 
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    container_name: murcy_api
+    ports:
+      - "8090:8080"
+    env_file:
+      - enviroment.env
+    depends_on:
+      - postgres
+
+    
