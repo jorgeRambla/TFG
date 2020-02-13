@@ -21,6 +21,7 @@ services:
       - enviroment.env
     depends_on:
       - postgres
+      - mail
   murcy_app_old:
     build: 
       context: ./FrontEndOld
@@ -30,7 +31,6 @@ services:
       - "9000:80"
     depends_on:
       - murcy_api_old
-      
   murcy_api:
     build: 
       context: ./BackEnd
@@ -42,5 +42,23 @@ services:
       - enviroment.env
     depends_on:
       - postgres
-
-    
+      - mail
+  mail:
+    image: tvial/docker-mailserver:latest
+    hostname: mail
+    domainname: murcy.es
+    container_name: mail
+    ports:
+      - "25:25"
+      - "587:587"
+      - "465:465"
+    volumes:
+      - ./mail_data/mail:/var/mail
+      - ./mail_data/state::/var/mail-state
+      - ./mail_data/log::/var/log/mail
+      - ./config/:/tmp/docker-mailserver/
+      env_file:
+        - enviroment.env
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
