@@ -54,8 +54,8 @@ services:
       - "465:465"
     volumes:
       - ./mail_data/mail:/var/mail
-      - ./mail_data/state::/var/mail-state
-      - ./mail_data/log::/var/log/mail
+      - ./mail_data/state:/var/mail-state
+      - ./mail_data/log:/var/log/mail
       - ./config/:/tmp/docker-mailserver/
     env_file:
       - enviroment.env
