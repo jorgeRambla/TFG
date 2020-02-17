@@ -57,8 +57,8 @@ services:
       - ./mail_data/state::/var/mail-state
       - ./mail_data/log::/var/log/mail
       - ./config/:/tmp/docker-mailserver/
-      env_file:
-        - enviroment.env
+    env_file:
+      - enviroment.env
     cap_add:
       - NET_ADMIN
       - SYS_PTRACE
