@@ -10,3 +10,6 @@
 	path = BackEndOld
 	url = https://github.com/UNIZAR-30248-2019-MURCY/BackEnd
 	branch = master
+[submodule "FrontEnd"]
+	path = FrontEnd
+	url = https://github.com/jorgeRambla/FrontEnd
