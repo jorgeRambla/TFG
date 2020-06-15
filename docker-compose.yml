@@ -39,7 +39,7 @@ services:
     ports:
       - "8090:8080"
     env_file:
-      - enviroment_new.env
+      - enviroment_tfg.env
     depends_on:
       - postgres
       - mail
