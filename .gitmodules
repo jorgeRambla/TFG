@@ -13,3 +13,6 @@
 [submodule "FrontEnd"]
 	path = FrontEnd
 	url = https://github.com/jorgeRambla/FrontEnd
+[submodule "TFG_mail"]
+	path = TFG_mail
+	url = https://github.com/jorgeRambla/TFG_mail
