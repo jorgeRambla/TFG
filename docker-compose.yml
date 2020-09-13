@@ -2,30 +2,28 @@ version: '3'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:12
     container_name: "murcydb"
     volumes:
-      - ./postgres_db_init:/docker-entrypoint-initdb.d
+      - ./postgres_db_init:/docker-entrypoint-initdb.sh
     ports:
       - "5432:5432"
     env_file:
-      - enviroment.env
+      - ./envFiles/shared_postgres.env
+    restart: always
   murcy_api_old:
-    build: 
-      context: ./BackEndOld
-      dockerfile: Dockerfile
+    image: yorch044/tfg-api-old:tfg
     container_name: murcy_api_old
     ports:
       - "9090:8080"
     env_file:
-      - enviroment.env
+      - ./envFiles/shared_postgres.env
+      - ./envFiles/enviroment_old.env
     depends_on:
       - postgres
       - mail
   murcy_app_old:
-    build: 
-      context: ./FrontEndOld
-      dockerfile: Dockerfile
+    image: yorch044/tfg-app-old:tfg
     container_name: murcy_application_old
     ports:
       - "9000:80"
@@ -39,10 +37,33 @@ services:
     ports:
       - "8090:8080"
     env_file:
-      - enviroment_tfg.env
+      - ./envFiles/shared_postgres.env
+      - ./envFiles/enviroment_new.env
+    depends_on:
+      - postgres
+      - murcy_mail_api
+  murcy_mail_api:
+    build: 
+      context: ./TFG_mail
+      dockerfile: Dockerfile
+    container_name: "murcymail"
+    ports:
+      - "8091:8080"
+    env_file:
+      - ./envFiles/shared_postgres.env
+      - ./envFiles/enviroment_mail-api.env
     depends_on:
       - postgres
       - mail
+  murcy_app:
+    build: 
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    container_name: murcy_app
+    ports:
+      - "8099:80"
+    depends_on:
+      - murcy_api
   mail:
     image: tvial/docker-mailserver:latest
     hostname: mail
@@ -58,7 +79,9 @@ services:
       - ./mail_data/log:/var/log/mail
       - ./config/:/tmp/docker-mailserver/
     env_file:
-      - enviroment.env
+      - ./envFiles/shared_mail.env
     cap_add:
       - NET_ADMIN
       - SYS_PTRACE
+    restart: always
+  
